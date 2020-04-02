@@ -1,0 +1,73 @@
+{
+    "pipeline": {
+        "name": "MyFirstPipeline",
+        "roleArn": "arn:aws:iam::996664734663:role/service-role/AWSCodePipelineServiceRole-eu-west-1-MyFirstPipeline",
+        "artifactStore": {
+            "type": "S3",
+            "location": "codepipeline-eu-west-1-878044729103"
+        },
+        "stages": [
+            {
+                "name": "Source",
+                "actions": [
+                    {
+                        "name": "Source",
+                        "actionTypeId": {
+                            "category": "Source",
+                            "owner": "AWS",
+                            "provider": "CodeCommit",
+                            "version": "1"
+                        },
+                        "runOrder": 1,
+                        "configuration": {
+                            "BranchName": "master",
+                            "PollForSourceChanges": "false",
+                            "RepositoryName": "clares-demo"
+                        },
+                        "outputArtifacts": [
+                            {
+                                "name": "SourceArtifact"
+                            }
+                        ],
+                        "inputArtifacts": [],
+                        "region": "eu-west-1",
+                        "namespace": "SourceVariables"
+                    }
+                ]
+            },
+            {
+                "name": "Deploy",
+                "actions": [
+                    {
+                        "name": "Deploy",
+                        "actionTypeId": {
+                            "category": "Deploy",
+                            "owner": "AWS",
+                            "provider": "CodeDeploy",
+                            "version": "1"
+                        },
+                        "runOrder": 1,
+                        "configuration": {
+                            "ApplicationName": "MyDemoApplication",
+                            "DeploymentGroupName": "MyDemoDeploymentGroup"
+                        },
+                        "outputArtifacts": [],
+                        "inputArtifacts": [
+                            {
+                                "name": "SourceArtifact"
+                            }
+                        ],
+                        "region": "eu-west-1",
+                        "namespace": "DeployVariables"
+                    }
+                ]
+            }
+        ],
+        "version": 1
+    },
+    "metadata": {
+        "pipelineArn": "arn:aws:codepipeline:eu-west-1:996664734663:MyFirstPipeline",
+        "created": "2020-03-27T15:30:54.431000-04:00",
+        "updated": "2020-03-27T15:30:54.431000-04:00"
+    }
+}
